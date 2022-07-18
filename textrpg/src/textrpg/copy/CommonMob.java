@@ -42,8 +42,11 @@ Random r = new Random();
 	}
 	
 	@Override
-	public int attack() {
-		this.damage = 25 + r.nextInt(10);
+	public int attack(int player_level) {
+		double hardness = player_level*0.1+1;
+		int mobNum = 5 + r.nextInt(6);
+		
+		this.damage = (int)Math.round((25 + r.nextInt(10))*mobNum*hardness);
 		return this.damage;
 	}
 	
@@ -60,6 +63,13 @@ Random r = new Random();
 	@Override
 	public void recoveryHP() {
 		
+	}
+
+
+	@Override
+	public int attack() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	// skill()메소드는 abstract 메소드가 아닌 일반 메소드로 만들었기 때문에 Sub 클래스에서 반드시 함수를 재정의해서 구현할 필요가 없다.

@@ -21,8 +21,11 @@ public class Barbarian extends Player {
 	}
 	
 	@Override
-	public int attack() {
-		this.damage = 300 + r.nextInt(100);
+	public int attack(int player_level) {
+		
+
+		double hardness = player_level*0.1+1;
+		this.damage = (int)Math.round((300 + r.nextInt(100))*hardness); 
 		return this.damage;		
 	}
 	
@@ -37,24 +40,25 @@ public class Barbarian extends Player {
 	
 	@Override
 	public void recoveryHP() {
-		if (this.hp < 9700) {
 			this.hp = this.hp + this.recovery;
-		}
-		if (this.hp > 9700) {	// 회복은 하지만 자신의 최대 HP를 넘어갈 수 없도록 보정.
-			this.hp = 9700;
-		}
 	}
 	
 	@Override
-	public int skill() {
+	public void recoveryHP(int hp) {
+			this.hp = this.hp + hp;
+	}
+	
+	@Override
+	public int skill(int player_level) {
 		for (int i = 0; i < 99; i++) {
 			try {
 				System.out.println(this.playerName + "의 마력을 해방하려면 '1', 축적하려면 '2'를 입력하세요. [마력 게이지 " + (this.saveskill+1)*100 + "%]");
 				int yourDecision = s.nextInt();
 				s.nextLine();	// nextInt() return 소거용. 이거는 nextInt()에 정수가 들어왔을 경우에만 소거가 작동하지 nextInt()에 문자가 들어올 경우에는 아예 윗 라인에서 에러가 나고 바로 catch로 빠지기 때문에 입력이 들어오지 않는다.
 				if (yourDecision == 1) {
-					System.out.println(this.playerName + "가 휠윈드를 사용합니다.");
-					this.damage = ((2000 + r.nextInt(500)) * (this.saveskill + 1));
+					System.out.println(this.playerName + "가 스킬을 사용합니다.");
+					double hardness = player_level*0.1+1;
+					this.damage = (int)Math.round((2000 + r.nextInt(500))*hardness)  * (this.saveskill + 1) ;
 					this.saveskill = 0;
 					break;	// 정상 입력이 들어왔을 경우 for문을 나가기 위한 제어.
 				} else if (yourDecision == 2) {
@@ -76,5 +80,17 @@ public class Barbarian extends Player {
 			
 		return this.damage;
 		
+	}
+
+	@Override
+	public int attack() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int skill() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

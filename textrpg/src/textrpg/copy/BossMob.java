@@ -16,6 +16,7 @@ Random r = new Random();
 		this.bossName = bossNameArray[r.nextInt(11)];
 		this.hp = (int) Math.round((20000+r.nextInt(10000))*hardness);
 		this.recovery = 100;
+		this.hp_backup = this.hp;
 		this.toString();
 	}
 	
@@ -25,13 +26,14 @@ Random r = new Random();
 	}
 	
 	@Override
-	public int attack() {
+	public int attack(int player_level) {
+		double hardness = player_level*0.1+1;
 		if (r.nextInt(10) == 0) {	// 10% 확률로 실행.
 			System.out.println(this.bossName + "가 치명타로 공격합니다!");
-			this.damage = 800 + r.nextInt(800);
+			this.damage = (int)Math.round((800 + r.nextInt(800))*hardness);
 			return this.damage;
 		} else {					// 90% 확률로 실행.
-			this.damage = 200 + r.nextInt(400);
+			this.damage = (int)Math.round((200 + r.nextInt(400))*hardness);
 			return this.damage;
 		}
 	}
@@ -47,11 +49,11 @@ Random r = new Random();
 	
 	@Override
 	public void recoveryHP() {
-		if (this.hp < 30000) {
+		if (this.hp < this.hp_backup) {
 			this.hp = this.hp + this.recovery;
 		}
-		if (this.hp > 30000) {	// 회복은 하지만 자신의 최대 HP를 넘어갈 수 없도록 보정.
-			this.hp = 30000;
+		if (this.hp > this.hp_backup) {	// 회복은 하지만 자신의 최대 HP를 넘어갈 수 없도록 보정.
+			this.hp = this.hp_backup;
 		}
 	}
 	
@@ -59,5 +61,11 @@ Random r = new Random();
 	public int skill() {
 		this.damage = 500 + r.nextInt(1000);
 		return this.damage;
+	}
+
+	@Override
+	public int attack() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -8,6 +8,7 @@ public abstract class Monster {
 	int blending;
 	boolean isLive = true;
 	int damage;
+	int hp_backup;
 	
 	public String toString() {
 		System.out.print(" HP: " + this.hp + " / ");
@@ -23,6 +24,11 @@ public abstract class Monster {
 	
 	// public abstract skill()로 바꿀 경우 CommobMob 클래스에서 skill 메소드를 사용하지 않더라도 구현해줘야한다. 
 	public int skill() {
+		return 0;
+	}
+
+	public int attack(int player_level) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 	
