@@ -52,17 +52,17 @@ public class Barbarian extends Player {
 	public int skill(int player_level) {
 		for (int i = 0; i < 99; i++) {
 			try {
-				System.out.println(this.playerName + "의 마력을 해방하려면 '1', 축적하려면 '2'를 입력하세요. [마력 게이지 " + (this.saveskill+1)*100 + "%]");
+				System.out.println("◎ "+this.playerName + "의 마력을 해방하려면 '1', 축적하려면 '2'를 입력하세요. [마력 게이지 " + (this.saveskill+1)*100 + "%]");
 				int yourDecision = s.nextInt();
 				s.nextLine();	// nextInt() return 소거용. 이거는 nextInt()에 정수가 들어왔을 경우에만 소거가 작동하지 nextInt()에 문자가 들어올 경우에는 아예 윗 라인에서 에러가 나고 바로 catch로 빠지기 때문에 입력이 들어오지 않는다.
 				if (yourDecision == 1) {
-					System.out.println(this.playerName + "가 스킬을 사용합니다.");
+					System.out.println("◎ "+this.playerName + "이(가) 마력을 해방합니다.");
 					double hardness = player_level*0.1+1;
 					this.damage = (int)Math.round((2000 + r.nextInt(500))*hardness)  * (this.saveskill + 1) ;
 					this.saveskill = 0;
 					break;	// 정상 입력이 들어왔을 경우 for문을 나가기 위한 제어.
 				} else if (yourDecision == 2) {
-					System.out.println("스킬을 모아둡니다.");
+					System.out.println("◎ 마력을 축적합니다.");
 					this.saveskill = this.saveskill + 1;
 					this.damage = 0; // 최초 턴 이후 스킬을 모았을 때 이전에 턴에 저장된 일반 공격력 값에 의해 플레이어의 공격이 실행되지 않도록 초기화.
 					break;	// 정상 입력이 들어왔을 경우 for문을 나가기 위한 제어.

@@ -53,7 +53,7 @@ Random r = new Random();
 	@Override
 	public void checkHP() {
 		if (this.hp < 1) {
-			System.out.println(this.commonMob + "이(가) 죽었습니다.");
+			System.out.println("△ " + this.commonMob + "이(가) 죽었습니다.");
 			this.isLive = false;
 			this.hp = 0;	// 사망시 HP 마이너스 된 값 0으로 보정.
 		}

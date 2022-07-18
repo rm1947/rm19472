@@ -15,6 +15,7 @@ public class textrpg {
 		int setBossStatus = 0;
 		int level_backup = 0;
 		int stamina = 10 + r.nextInt(5);
+		boolean exceptionErrorFix = false; //행동력이 음수일때 exception이 발생하면 지속적으로 데미지받는 현상 수정
 
 		// Player 생성.
 		Player[] player = new Player[2];
@@ -32,12 +33,13 @@ public class textrpg {
 		loop1: while (player[0].isAlive == 0) {
 			
 			System.out.println("[ LEVEL = " + player[0].level + " ] [ EXP = " + player[0].exp + " ] [ 공명도 = " + setBossStatus*10 + "% ] [ 행동력 = " + stamina + " ]" );
-			System.out.println("[ 당신의 HP = " + player[0].hp + " ] [ 소환수의 HP = " + player[1].hp + " ] ");
-
+			System.out.println("[ "+ player[0].playerName +"의 HP = " + player[0].hp + " ] [ "+ player[1].playerName+"의 HP = " + player[1].hp + " ] ");
+			System.out.println("[ "+ player[0].playerName +"의 마력 = " + player[0].saveskill*100 + "% ] [ "+player[1].playerName+"의 마력 = " + player[1].saveskill*100 + "% ] ");
 			
 			try {
 				
 				if(stamina<0) {
+					if(exceptionErrorFix==false) { //exceptionErrorFix체크해서 false일때만 데미지
 					int tempdmgstm;
 					double hardness = (player[0].level*0.1)+1;
 					tempdmgstm = (int)Math.round((1000+r.nextInt(500))*hardness);
@@ -59,6 +61,7 @@ public class textrpg {
 						player[0].isAlive = 1;
 						break;
 					}
+					}
 				}
 			
 			System.out.println("[ 1.이동하기 ] [ 2.휴식하기 ]");
@@ -67,7 +70,9 @@ public class textrpg {
 			s.nextLine();
 			
 			if(yourDecision == 2) {
-				System.out.println("《 행동력 1을 소모하여 휴식을 취합니다. 》");
+				exceptionErrorFix = false; //정상적으로 진행되면 exceptionErrorFix를 false로 되돌림
+				
+				System.out.println("《 행동력을 1 소모하여 휴식을 취합니다. 》");
 				stamina = stamina -1;
 				double hardness = (player[0].level*0.1)+1;
 				int temphp =  (int)Math.round((100 + r.nextInt(200))*hardness);
@@ -87,8 +92,9 @@ public class textrpg {
 			}
 			
 			else if(yourDecision == 1) {
+				exceptionErrorFix = false;  //정상적으로 진행되면 exceptionErrorFix를 false로 되돌림
 				
-				System.out.println("《 행동력 1을 소모하여 이동합니다. 》");
+				System.out.println("《 행동력을 1 소모하여 이동합니다. 》");
 				stamina = stamina -1;
 				System.out.println("");
 			
@@ -111,15 +117,16 @@ public class textrpg {
 					int mobNum = 5 + r.nextInt(6);
 					mobNum = 1;
 					Monster[] mob = new Monster[mobNum];
-	
+					
+					System.out.print("△ ");
 					for (int i = 0; i < mobNum; i++) {
 						mob[i] = new CommonMob(player[0].level);
 					}
-					System.out.println("가 나타났습니다. [" + player[0].level + " 만큼 강화됨]");
+					System.out.println("가 나타났습니다. [" + player[0].level + " 만큼 강화됨] ");
 	
 					// 일반몹과 전투 진행.
 					for (int i = 0; i < 9999; i++) {
-						System.out.println("[Enter]를 누르면 턴을 진행합니다.");
+						System.out.println("[Enter]를 누르면 턴을 진행합니다. ");
 						s.nextLine();
 	
 						// 플레이어의 공격.
@@ -135,20 +142,23 @@ public class textrpg {
 	
 						if (player[0].isLive) { // Player 1이 살아있다면 실행.
 							if (damageSor == 0) {
-								System.out.println(player[0].playerName + "는 스킬을 " + player[0].saveskill + "개 모았습니다.");
+								System.out.println("◎ " +player[0].playerName + "은(는) 마력을 " + player[0].saveskill*100 + "% 만큼 축적했습니다.");
 							} else {
-								System.out.println(player[0].playerName + "가 공격력 " + damageSor + "으로 공격합니다.");
+								System.out.println("◎ "+player[0].playerName + "이(가) 공격력 " + damageSor + "으로 공격합니다.");
 							}
 						}
 						
 						if (player[1].isLive) { // Player 2가 살아있다면 실행.
 							if (damageBar == 0) {
-								System.out.println(player[1].playerName + "은 스킬을 " + player[1].saveskill + "개 모았습니다.");
+								System.out.println("◎ "+player[1].playerName + "은(는) 마력을 " + player[1].saveskill*100 + "% 만큼 축적했습니다.");
 							} else {
-								System.out.println(player[1].playerName + "이 공격력 " + damageBar + "으로 공격합니다.");
+								System.out.println("◎ "+player[1].playerName + "이(가) 공격력 " + damageBar + "으로 공격합니다.");
 							}
 						}
 						System.out.println("");
+						
+					
+						
 	
 						for (int j = 0; j < mobNum; j++) {
 							if (mob[j].isLive) { // j번째 몹이 살아있다면
@@ -160,15 +170,20 @@ public class textrpg {
 								// Player 2 Barbarian이 공격.
 								mob[j].hp = mob[j].hp - damageBar;
 								mob[j].checkHP();
+								
+								System.out.print("△ "); //몹체력표시
+								System.out.println( mob[j].toString());
+								
+								if(mob[j].hp>0) {
 								int damage;
 								// j번째 몹이 Player1, 2의 공격을 받고 살아있다면 몹이 플레이어를 공격.
 								damage = mob[j].attack(player[0].level);
 								int selectEnemy = r.nextInt(100);
 								selectEnemy = selectEnemy%2;
-								
-								
-								System.out.println(mob[j] + "이(가) 공격력" + damage + " 으로 " + player[selectEnemy].playerName + "을(를) 공격합니다.");
+								System.out.print("△ ");
+								System.out.println(mob[j] + "이(가) 공격력 " + damage + " 으로 " + player[selectEnemy].playerName + "을(를) 공격합니다.");
 								player[selectEnemy].hp = player[selectEnemy].hp - damage;
+								}
 							}
 	
 						}
@@ -177,16 +192,18 @@ public class textrpg {
 						// 몹의 남은 체력 표시 및 종료 조건 생성.
 						int remainTotalHP = 0; // 종료조건 생성용.
 						for (int j = 0; j < mobNum; j++) {
-							System.out.print(mob[j].toString());
+							//System.out.print("△ ");
+							//System.out.print( mob[j].toString());
 							remainTotalHP = remainTotalHP + mob[j].hp;
 						}
 						System.out.println("\n");
 						if (remainTotalHP != 0) {
-							System.out.print("플레이어의 체력은 ");
+							System.out.print("");
 						} else {
-							System.out.print("몹이 모두 죽었습니다. 남은 체력은 ");
+							System.out.print("△ 몹이 모두 죽었습니다.");
 						}
-	
+						
+						System.out.print("◎ ");
 						System.out.print(player[0].toString()); // toString은 출력시 "다른 문장"이나 + " " + 와 결합하면 순서 인식을 안 하는지 순서가
 																// 엉망이 되어 분리함.
 						System.out.print(" ");
@@ -202,24 +219,24 @@ public class textrpg {
 	
 						if (remainTotalHP == 0) {
 							setBossStatus = setBossStatus + r.nextInt(2)+1;
-							System.out.println("불온한 기운이 흩뿌려지며  보스를 향한 공명의 기운이 " + setBossStatus*10 + "% 만큼 차올랐습니다.");
+							System.out.println("△ 불온한 기운이 흩뿌려지며  보스를 향한 공명의 기운이 " + setBossStatus*10 + "% 만큼 차올랐습니다.");
 							
 							
 							
 							int tempexp = r.nextInt(100);
-							System.out.println("경험치를" + tempexp + "획득했습니다.");
+							System.out.println("◎ 경험치를" + tempexp + "획득했습니다.");
 							player[0].exp = player[0].exp + tempexp;
-							System.out.println("당신의 경험치는" + player[0].exp + "입니다.");
+							System.out.println("◎ 당신의 경험치는" + player[0].exp + "입니다.");
 							
 							player[0].level = player[0].exp/100 ;
 							
-							System.out.println("현재 레벨은" + player[0].level + "입니다.");
+							System.out.println("◎ 현재 레벨은" + player[0].level + "입니다.");
 							
 							if(level_backup!=player[0].level) {
 								
 								double hardness = player[0].level*0.1+1;
 								int temphp =  (int)Math.round((100 + r.nextInt(200))*hardness);
-								System.out.println("레벨업을 통해 체력을 " + temphp + "만큼 회복했습니다." );
+								System.out.println("◎ 레벨업을 통해 체력을 " + temphp + "만큼 회복했습니다." );
 								player[0].recoveryHP(temphp);
 								player[1].recoveryHP(temphp);
 								level_backup=player[0].level;
@@ -234,14 +251,18 @@ public class textrpg {
 						
 						// 플레이어는 살아있다면 매 턴마다 체력을 일정량 회복합니다.
 						if (player[0].isLive) {
+							double hardness = player[0].level*0.1+1;
+							player[0].recovery = (int)Math.round((30+r.nextInt(100))*hardness);
 							player[0].recoveryHP();
-							System.out.println(player[0].playerName + "은 최대 " + player[0].recovery + "만큼 체력을 회복합니다.");
+							System.out.println("◎ " + player[0].playerName + "은(는) " + player[0].recovery + "만큼 체력을 회복했습니다.");
 
 							
 						}
 						if (player[1].isLive) {
+							double hardness = player[0].level*0.1+1;
+							player[1].recovery = (int)Math.round((30+r.nextInt(100))*hardness);
 							player[1].recoveryHP();
-							System.out.println(player[1].playerName + "은 최대 " + player[1].recovery + "만큼 체력을 회복합니다.");
+							System.out.println("◎ " + player[1].playerName + "은(는) " + player[1].recovery + "만큼 체력을 회복했습니다.");
 						}
 						System.out.println("----------------------------------------------");
 	
@@ -261,11 +282,11 @@ public class textrpg {
 				System.out.println("\n\n");
 				System.out.println("공명의 기운이 엄습하여 보스");
 				BossMob boss = new BossMob(player[0].level);
-				System.out.println("가 나타났습니다.\n\n");
+				System.out.println("가 나타났습니다. [" + player[0].level + " 만큼 강화됨] \n\n");
 
 				// 보스몹 디아블로와 전투 진행.
 				for (int i = 0; i < 9999; i++) {
-					System.out.println("턴 진행 [ENTER 입력]");
+					System.out.println("[Enter]를 누르면 턴을 진행합니다.");
 					s.nextLine();
 
 					// 플레이어의 공격.
@@ -279,17 +300,17 @@ public class textrpg {
 
 					if (player[0].isLive) { // Player 1이 살아있다면 실행.
 						if (damageSor == 0) {
-							System.out.println(player[0].playerName + "는 스킬을 " + player[0].saveskill + "개 모았습니다.");
+							System.out.println(player[0].playerName + "은(는) 마력을 " + player[0].saveskill*100 + "%만큼 축적했습니다.");
 						} else {
-							System.out.println(player[0].playerName + "가 공격력 " + damageSor + "으로 공격합니다.");
+							System.out.println(player[0].playerName + "이(가) 공격력 " + damageSor + "으로 공격합니다.");
 						}
 						boss.hp = boss.hp - damageSor;
 					}
 					if (player[1].isLive) { // Player 2가 살아있다면 실행.
 						if (damageBar == 0) {
-							System.out.println(player[1].playerName + "은 스킬을 " + player[1].saveskill + "개 모았습니다.");
+							System.out.println(player[1].playerName + "은(는) 마력을 " + player[1].saveskill*100 + "%만큼 축적했습니다.");
 						} else {
-							System.out.println(player[1].playerName + "이 공격력 " + damageBar + "으로 공격합니다.");
+							System.out.println(player[1].playerName + "이(가) 공격력 " + damageBar + "으로 공격합니다.");
 						}
 						boss.hp = boss.hp - damageBar;
 					}
@@ -331,7 +352,7 @@ public class textrpg {
 					}
 
 					if (!boss.isLive) {
-						System.out.println("보스" + boss.bossName + "을(를) 퇴지했습니다.");
+						System.out.println("보스 " + boss.bossName + "을(를) 퇴치했습니다.");
 						
 						System.out.println("생명의 기운을 획득해 행동력을 회복했습니다.");
 						double hardness = player[0].level*0.1+1;
@@ -392,15 +413,29 @@ public class textrpg {
 		}
 		
 			else {
+				exceptionErrorFix=true;  //exception에러가 발생하였을경우 데미지를 1회만 받기 위해 true로 변경
+				
 				System.out.println("다시 입력해주세요.");
+				System.out.println("");
+				System.out.println("============================================");
+				System.out.println("");
 				continue;
 			}
 		
 
 		} catch (Exception e) {
+			exceptionErrorFix=true; //exception에러가 발생하였을경우 데미지를 1회만 받기 위해 true로 변경
+			
 			System.out.println("다시 입력해주세요.");
+			System.out.println("");
+			System.out.println("============================================");
+			System.out.println("");
 			s.nextLine();
+			continue;
 		}
+			
+			
+			
 			if(player[0].hp<0) {
 				player[0].isAlive = 1;
 				break;
