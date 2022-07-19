@@ -249,7 +249,7 @@ public class textrpg {
 							}
 							
 							System.out.println("" );
-							System.out.println("-----------------------------------------" );
+							System.out.println("--------------------------------------------" );
 							
 							break;
 						}
@@ -270,7 +270,7 @@ public class textrpg {
 							player[1].recoveryHP();
 							System.out.println("◎ " + player[1].playerName + "은(는) " + player[1].recovery + "만큼 체력을 회복했습니다.");
 						}
-						System.out.println("----------------------------------------------");
+						System.out.println("-------------------------------------------------");
 	
 						
 				}
@@ -397,7 +397,7 @@ public class textrpg {
 						
 						}
 						System.out.println("" );
-						System.out.println("-----------------------------------------" );
+						System.out.println("--------------------------------------------" );
 						
 						break;
 					} else if (!player[0].isLive && !player[1].isLive) {
@@ -409,21 +409,23 @@ public class textrpg {
 						double hardness = player[0].level*0.1+1;
 						player[0].recovery = (int)Math.round((30+r.nextInt(30))*hardness);
 						player[0].recoveryHP();
-						System.out.println("◎ " + player[0].playerName + "은 최대 " + player[0].recovery + "만큼 체력을 회복합니다.");
+						System.out.println("◎ " + player[0].playerName + "은(는) " + player[0].recovery + "만큼 체력을 회복했습니다.");
 					}
 					if (player[1].isLive) {
 						double hardness = player[0].level*0.1+1;
 						player[1].recovery = (int)Math.round((30+r.nextInt(30))*hardness);
 						player[1].recoveryHP();
-						System.out.println("◎ " + player[1].playerName + "은 최대 " + player[1].recovery + "만큼 체력을 회복합니다.");
+						System.out.println("◎ " + player[1].playerName + "은(는) " + player[1].recovery + "만큼 체력을 회복했습니다.");
 					}
 
 					// 디아블로 역시 살아있다면 매 턴마다 체력을 일정량 회복합니다.
 					if (boss.isLive) {
+						double hardness = player[0].level*0.1+1;
+						boss.recovery = (int)Math.round((100+r.nextInt(100))*hardness);
 						boss.recoveryHP();
-						System.out.println("△ " + boss.bossName + "은 최대 " + boss.recovery + "만큼 체력을 회복합니다.");
+						System.out.println("△ " + boss.bossName + "은(는) " + boss.recovery + "만큼 체력을 회복했습니다.");
 					}
-					System.out.println("----------------------------------------------");
+					System.out.println("-------------------------------------------------");
 
 
 				}
