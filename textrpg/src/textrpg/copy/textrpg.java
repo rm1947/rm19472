@@ -57,7 +57,7 @@ public class textrpg {
 					System.out.println("\n");
 					
 					
-					if(player[0].hp<0) {
+					if(player[0].hp<0) { //자기장 사망처리
 						player[0].isAlive = 1;
 						break;
 					}
@@ -373,7 +373,7 @@ public class textrpg {
 						if(stamina<0) {
 							stamina=0;
 						}
-						stamina = stamina + (int)Math.round((10 + r.nextInt(5))*hardness);
+						stamina = (int)Math.round(stamina/10) + (int)Math.round((10 + r.nextInt(5))*hardness);
 						
 						int tempexp = r.nextInt(200)+100;
 						System.out.println("◎ 경험치를" + tempexp + "획득했습니다.");
@@ -406,10 +406,14 @@ public class textrpg {
 
 					// 플레이어는 살아있다면 매 턴마다 체력을 일정량 회복합니다.
 					if (player[0].isLive) {
+						double hardness = player[0].level*0.1+1;
+						player[0].recovery = (int)Math.round((30+r.nextInt(30))*hardness);
 						player[0].recoveryHP();
 						System.out.println("◎ " + player[0].playerName + "은 최대 " + player[0].recovery + "만큼 체력을 회복합니다.");
 					}
 					if (player[1].isLive) {
+						double hardness = player[0].level*0.1+1;
+						player[1].recovery = (int)Math.round((30+r.nextInt(30))*hardness);
 						player[1].recoveryHP();
 						System.out.println("◎ " + player[1].playerName + "은 최대 " + player[1].recovery + "만큼 체력을 회복합니다.");
 					}
