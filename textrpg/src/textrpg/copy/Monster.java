@@ -11,7 +11,7 @@ public abstract class Monster {
 	int hp_backup;
 	
 	public String toString() {
-		System.out.print("HP: " + this.hp + " ");
+		System.out.print(" HP: " + this.hp + " ");
 		return "";
 	}
 	

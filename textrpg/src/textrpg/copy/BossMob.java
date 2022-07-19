@@ -29,7 +29,7 @@ Random r = new Random();
 	public int attack(int player_level) {
 		double hardness = player_level*0.1+1;
 		if (r.nextInt(10) == 0) {	// 10% 확률로 실행.
-			System.out.println(this.bossName + "가 치명타로 공격합니다!");
+			System.out.println("△ " + this.bossName + "가 치명타로 공격합니다!");
 			this.damage = (int)Math.round((800 + r.nextInt(800))*hardness);
 			return this.damage;
 		} else {					// 90% 확률로 실행.
@@ -41,7 +41,7 @@ Random r = new Random();
 	@Override
 	public void checkHP() {
 		if (this.hp < 1) {
-			System.out.println(this.bossName + "이(가) 죽었습니다.");
+			System.out.println("△ " + this.bossName + "이(가) 죽었습니다.");
 			this.isLive = false;
 			this.hp = 0;	// 사망시 HP 마이너스 된 값 0으로 보정.
 		}

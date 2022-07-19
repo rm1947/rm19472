@@ -15,7 +15,7 @@ public abstract class Player {
 	
 	// abstract Ŭ������ ����ٰ� 
 	public String toString() {
-		System.out.print("의 HP: " + this.hp);
+		System.out.print("의 HP : " + this.hp);
 		return "";
 	}
 	
