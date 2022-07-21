@@ -612,6 +612,6 @@ public class textrpg {
 		}
 
 		System.out.println("◎ 패배했습니다. 최종결과 : 레벨[ " + player[0].level + " ] 점수 [ " + player[0].exp + " ]");
-
+		s.close();
 	}
 }
