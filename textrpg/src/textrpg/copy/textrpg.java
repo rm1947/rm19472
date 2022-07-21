@@ -3,10 +3,13 @@ package textrpg.copy;
 import java.util.Random;
 import java.util.Scanner;
 
+
+
 public class textrpg {
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		Random r = new Random();
+		
 
 		int damageBar;
 		int damageSor;
