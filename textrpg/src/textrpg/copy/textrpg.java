@@ -6,7 +6,12 @@ import java.util.Scanner;
 
 
 public class textrpg {
+	
 	public static void main(String[] args) {
+		textrpg_main();
+	}
+	
+	public static void textrpg_main() {
 		Scanner s = new Scanner(System.in);
 		Random r = new Random();
 		
